@@ -1,0 +1,45 @@
+# This sample workflow showcases the usage of version key in meta and check_version in activity definition.
+# Version check whether the current application version is aligned to the specified version.
+# There could be different version of workers available, if the workflow is specified to a wrong version of worker, it should throw the error instead of execution
+#
+# Check_version in activity is a only an error check / error detection mechanism by design, the version number can be checked on activity for different implementation
+
+meta:
+  name: wf-version
+  max_duration: 10m
+  max_start_time: 10s
+  version: 0.0.1
+  #change to 0.0.2 should fail
+root:
+  - flipcoin1
+variables:
+  arg1: value1
+  arg2: value2
+
+nodes:
+  - name: flipcoin1
+    tasklist: worker1
+    sequence:
+      elements:
+      - activity:
+          name: main.sampleActivity1
+          arguments:
+          - arg1
+          result: result1
+      - activity:
+          name: main.sampleVersionActivity
+          arguments:
+          - result1
+          result: result2
+          maximum_attempts: 5
+          max_duration: 5m
+          heartbeat: true
+          check_version: 2
+          #modify the version to 1 should fail
+        stop_on_err: true
+      - activity:
+          name: main.sampleActivity3
+          arguments:
+          - arg2
+          - result2
+          result: result3

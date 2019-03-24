@@ -1,0 +1,160 @@
+# This sample workflow execute 5 nodes in a DAG flow.
+# 1) sampleActivity1, takes arg1 as input, and put result as result1.
+# 2) sampleActivity2, takes result1 as input, and put result as result2. It will randomly generate err.
+# 3) sampleActivity3, takes args2 and result2 as input, and put result as result3.
+# The stop_on_err is set to be false here except in flipcoin3, if sampleActivity2 generate err in flipcoin3, the whole workflow would be killed
+#    Happy flow: once the flipcoin1 is executed successfully, the flipcoin2 and flipcoin3 will be executed, flipcoin4 will wait flipcoin2 and flipcoin3 and then execute.
+# flipcoin5 will wait for flipcoin4 and then execute, no matter if there is err or not.
+#
+# whenever the err happens, the following activities within the same statement after the err one would not be executed.
+#
+# This DAG workflow extends workflow_dag
+# It can be updated from workflow_dag so that if paused before complete, the workflow will continue to execute flipcoin5
+# after updated, the workflow will automatic resume
+#
+# steps:
+# ./bin/dsl -m trigger -wfType DagWorkflow -dslConfig samples/workflow_dag.yaml
+# ./bin/dsl -m pause -w workflowId
+# ./bin/dsl -m update -w workflowId -dslConfig samples/workflow_dag_2.yaml
+
+
+meta:
+  name: wf-nonblock
+  max_duration: 10m
+  max_start_time: 10s
+
+variables:
+  arg1: value1
+  arg2: value2
+root:
+  - flipcoin1
+
+root:
+- flipcoin1
+
+nodes:
+  - name: flipcoin1
+    sequence:
+      elements:
+      - activity:
+          name: main.sampleActivity1
+          arguments:
+          - arg1
+          result: result1
+      - activity:
+          name: main.sampleActivity2
+          arguments:
+          - result1
+          result: result2
+          maximum_attempts: 5
+          max_duration: 5m
+          heartbeat: true
+        stop_on_err: false
+      - activity:
+          name: main.sampleActivity3
+          arguments:
+          - arg2
+          - result2
+          result: result3
+    next:
+    - flipcoin2
+    - flipcoin3
+  - name: flipcoin2
+    sequence:
+      elements:
+        - activity:
+            name: main.sampleActivity1
+            arguments:
+            - arg1
+            result: result1
+        - activity:
+            name: main.sampleActivity2
+            arguments:
+            - result1
+            result: result2
+            maximum_attempts: 1
+            max_duration: 5m
+            heartbeat: true
+          stop_on_err: false
+        - activity:
+            name: main.sampleActivity3
+            arguments:
+            - arg2
+            - result2
+            result: result3
+    next:
+    - flipcoin4
+  - name: flipcoin3
+    sequence:
+      elements:
+        - activity:
+            name: main.sampleActivity1
+            arguments:
+            - arg1
+            result: result1
+        - activity:
+            name: main.sampleActivity2
+            arguments:
+            - result1
+            result: result2
+            maximum_attempts: 5
+            max_duration: 5m
+            heartbeat: false
+          stop_on_err: true
+        - activity:
+            name: main.sampleActivity3
+            arguments:
+            - arg2
+            - result2
+            result: result3
+    next:
+    - flipcoin4
+  - name: flipcoin4
+    sequence:
+      elements:
+        - activity:
+            name: main.sampleActivity1
+            arguments:
+            - arg1
+            result: result1
+        - activity:
+            name: main.sampleActivity2
+            arguments:
+            - result1
+            result: result2
+            maximum_attempts: 1
+            max_duration: 5m
+            heartbeat: true
+          stop_on_err: false
+        - activity:
+            name: main.sampleActivity3
+            arguments:
+            - arg2
+            - result2
+            result: result3
+    next:
+    - flipcoin5
+  - name: flipcoin5
+    sequence:
+      elements:
+        - activity:
+            name: main.sampleActivity1
+            arguments:
+            - arg1
+            result: result1
+        - activity:
+            name: main.sampleActivity2
+            arguments:
+            - result1
+            result: result2
+            maximum_attempts: 1
+            max_duration: 5m
+            heartbeat: true
+          stop_on_err: false
+        - activity:
+            name: main.sampleActivity3
+            arguments:
+            - arg2
+            - result2
+            result: result3
+

@@ -1,0 +1,157 @@
+# This sample workflow showcases pause on fail feature.
+# It is implemented similarly to pause, only difference is that it is only triggered when error happens (conditional pause)
+# When pause happens, the workflow will only continue when the pause activity is completed by the complete mode
+#
+# In this case, when error happens, the pause activity will be triggered, and the left activity in that statement will not be executed.
+# Use complete mode with workflowId and pause activity id to continue the workflow, flipcoin5 will only be executed if flipcoin4 and flipcoin3 are completed.
+#
+# start the workflow:
+# ./bin/dsl -m trigger -wfType DagWorkflow -dslConfig samples/workflow_dag_multiroot_pause_on_fail.yaml
+# resume the workflow:
+# ./bin/dsl -m complete -w workflowId -t pauseActivityId
+meta:
+  name: wf-multiroot-pauseonfail
+  max_duration: 10m
+  max_start_time: 10s
+root:
+  - flipcoin1
+  - flipcoin2
+  - flipcoin3
+  - flipcoin4
+  - flipcoin5
+variables:
+  arg1: value1
+  arg2: value2
+
+nodes:
+  - name: flipcoin1
+    sequence:
+      elements:
+      - activity:
+          name: main.sampleActivity1
+          arguments:
+          - arg1
+          result: result1
+      - activity:
+          name: main.sampleActivity2
+          arguments:
+          - result1
+          result: result2
+          maximum_attempts: 5
+          max_duration: 5m
+          heartbeat: true
+          pause_on_fail: true
+        stop_on_err: false
+      - activity:
+          name: main.sampleActivity3
+          arguments:
+          - arg2
+          - result2
+          result: result3
+    next:
+    - flipcoin3
+  - name: flipcoin2
+    sequence:
+      elements:
+        - activity:
+            name: main.sampleActivity1
+            arguments:
+            - arg1
+            result: result1
+        - activity:
+            name: main.sampleActivity2
+            arguments:
+            - result1
+            result: result2
+            maximum_attempts: 1
+            max_duration: 5m
+            heartbeat: true
+            pause_on_fail: true
+          stop_on_err: false
+        - activity:
+            name: main.sampleActivity3
+            arguments:
+            - arg2
+            - result2
+            result: result3
+    next:
+    - flipcoin4
+  - name: flipcoin3
+    sequence:
+      elements:
+        - activity:
+            name: main.sampleActivity1
+            arguments:
+            - arg1
+            result: result1
+        - activity:
+            name: main.sampleActivity2
+            arguments:
+            - result1
+            result: result2
+            maximum_attempts: 5
+            max_duration: 5m
+            heartbeat: false
+            pause_on_fail: true
+          stop_on_err: true
+          # if true, after resume, the workflow will still be canceled
+          # it can be updated to false when pause by using update mode with new yaml file, then the workflow will continue as stop_on_err flag is updated to false
+        - activity:
+            name: main.sampleActivity3
+            arguments:
+            - arg2
+            - result2
+            result: result3
+    next:
+    - flipcoin5
+  - name: flipcoin4
+    sequence:
+      elements:
+        - activity:
+            name: main.sampleActivity1
+            arguments:
+            - arg1
+            result: result1
+        - activity:
+            name: main.sampleActivity2
+            arguments:
+            - result1
+            result: result2
+            maximum_attempts: 1
+            max_duration: 5m
+            heartbeat: true
+            pause_on_fail: true
+          stop_on_err: false
+        - activity:
+            name: main.sampleActivity3
+            arguments:
+            - arg2
+            - result2
+            result: result3
+    next:
+    - flipcoin5
+  - name: flipcoin5
+    sequence:
+      elements:
+        - activity:
+            name: main.sampleActivity1
+            arguments:
+            - arg1
+            result: result1
+        - activity:
+            name: main.sampleActivity2
+            arguments:
+            - result1
+            result: result2
+            maximum_attempts: 1
+            max_duration: 5m
+            heartbeat: true
+            pause_on_fail: true
+          stop_on_err: false
+        - activity:
+            name: main.sampleActivity3
+            arguments:
+            - arg2
+            - result2
+            result: result3
+

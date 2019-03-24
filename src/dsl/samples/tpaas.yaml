@@ -1,0 +1,52 @@
+# This sample workflow execute 2 activities in sequence, retry the sequence until the break on result condition reach or reach the maximum attempts
+#
+# MonitorTpaasJob takes token, job requestId, get test detail frequency and the timeout for this long running activity as arguments.
+# It gives result based on the job status and whether there is failed cases, including "timeout", "initialized-failed", "success" and "retry"
+#
+# RetryTpaasJob takes token, job requestId, and also the result from MonitorTpaasJob as arguments.
+# It will give "break" and reach break condition if the result is "initialized-failed" or "success",
+# It will resubmit the requestId if MonitorTpaasJob gives "retry" and replace the original requestId with the new one.
+# If timeout, it will keep the same requestId so for the next try of monitoring
+#
+# The result will print out the last monitored jobId and the attempt count
+
+meta:
+  name: wf1
+  max_duration: 2m
+  max_start_time: 10s
+
+variables:
+  token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aGVueXUuei5saUBvcmFjbGUuY29tIiwiaWF0IjoxNTM2Nzc1NTE3fQ.YtEQDrhx1Y8g7IRzF1TTUHXGwX-4lOJwHykpvPlHlWxfgmnc_2V9Y__F3YGkzI_iytWtzS-ipEGuKgpg_Zab6Q
+  requestId: super_user_only/e7d7c5a8-b74c-4184-a1cd-7120db6b97b0
+  frequency: 5s
+  timeout: 1m
+
+
+root:
+  sequence:
+    elements:
+      - activity:
+          name: dsl/activityimpl.MonitorTpaasJob
+          arguments:
+            - token
+            - requestId
+            - frequency
+            - timeout
+          result: result1
+          maximum_attempts: 5
+          max_duration: 5m
+          heartbeat: true
+      - activity:
+          name: dsl/activityimpl.RetryTpaasJob
+          arguments:
+            - token
+            - requestId
+            - result1
+          result: requestId
+          result_break_condition: break
+    maximum_attempts: 5
+
+result:
+  info:
+    last_monitored_requestId: requestId
+    attempt_count: attempt

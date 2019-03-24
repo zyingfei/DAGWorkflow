@@ -1,0 +1,47 @@
+# This sample workflow showcases the basic usage of revisit notation for statement
+#
+# In this case, if the flipcoin generates false result, the dynamicOnFalseCondition will return the recNode:flipcoin1
+# and mark its node's next node as flipcoin1 itself. This would only work when flipcoin1 is marked revisit true, otherwise
+# it will complete anyway cause the next node is not revisitable
+
+
+meta:
+  name: wf-revisit
+  max_duration: 10m
+  max_start_time: 10s
+  version: 0.0.1
+
+root:
+  - flipcoin1
+
+variables:
+  arg1: value1
+  arg2: value2
+  recNode: flipcoin1
+
+root:
+- flipcoin1
+
+nodes:
+  - name: flipcoin1
+    sequence:
+      elements:
+        - activity:
+            name: main.sampleActivity1
+            arguments:
+              - arg1
+            result: result1
+        - activity:
+            name: main.flipCoin
+            result: flipResult
+            maximum_attempts: 5
+            max_duration: 5m
+            heartbeat: true
+        - activity:
+            name: main.dynamicOnFalseConditionActivity
+            arguments:
+              - flipResult
+              - recNode
+            result: nKey
+    next_key: nKey
+    revisit: true

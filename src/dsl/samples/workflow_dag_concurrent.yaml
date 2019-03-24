@@ -1,0 +1,18 @@
+# This sample workflow execute sampleActivity2 1000 times concurrently
+# If the count is set to bigger than 1, the amount of activities will be executed concurrently.
+#
+# tips: 1000 times will cause the UI to be relatively slow, reduce the number can still show its concurrency.
+
+meta:
+  name: wf-concurrent
+  max_duration: 10m
+  max_start_time: 10s
+root:
+  - flipcoin
+nodes:
+  - name: flipcoin
+    activity:
+      name: main.sampleActivity2
+      maximum_attempts: 1
+      max_duration: 5m
+      count: 1000

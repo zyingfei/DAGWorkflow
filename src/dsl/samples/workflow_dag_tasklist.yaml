@@ -1,0 +1,46 @@
+# This sample workflow showcases the tasklist key of statement definition. It will schedule the job in the specific tasklist instead of the default one
+# In this case, our default tasklist is DAGRunner_0.0.1, node flipcoin1 schedules all its activity on worker1 instead of default one.
+# If no such tasklist, worker1 is not available, it will hung until timeout. Otherwise the specified tasklist will pick up the activity.
+#
+# Since this attribute is in statement level, it is passed to the elements it contains
+#
+# To test it, start worker using config file with multitasks definition
+# ./bin/dsl -m worker -config config/development_multitasks.yaml
+# It will start worker1 and worker2 together with predefined workers
+
+meta:
+  name: wf-dag-tasklist
+  max_duration: 10m
+  max_start_time: 10s
+root:
+  - flipcoin1
+
+variables:
+  arg1: value1
+  arg2: value2
+
+nodes:
+  - name: flipcoin1
+    tasklist: worker1
+    sequence:
+      elements:
+      - activity:
+          name: main.sampleActivity1
+          arguments:
+          - arg1
+          result: result1
+      - activity:
+          name: main.sampleActivity2
+          arguments:
+          - result1
+          result: result2
+          maximum_attempts: 5
+          max_duration: 5m
+          heartbeat: true
+        stop_on_err: true
+      - activity:
+          name: main.sampleActivity3
+          arguments:
+          - arg2
+          - result2
+          result: result3

@@ -1,0 +1,49 @@
+# This sample workflow is to confirm the unreachable node won't influence the completion of workflow
+#
+# In this case, flipcoin2 is nonroot and is not the next node of flipcoin1
+# The workflow will only execute flipcoin1 node and loop it if the flipcoin generates false result and then mark the next node
+# as flipcoin1 itself.
+
+meta:
+  name: wf-unreachable
+  max_duration: 10m
+  max_start_time: 10s
+  version: 0.0.1
+root:
+  - flipcoin1
+
+variables:
+  arg1: value1
+  arg2: value2
+  recNode: flipcoin1
+nodes:
+  - name: flipcoin1
+    sequence:
+      elements:
+        - activity:
+            name: main.sampleActivity1
+            arguments:
+              - arg1
+            result: result1
+        - activity:
+            name: main.flipCoin
+            result: flipResult
+            maximum_attempts: 5
+            max_duration: 5m
+            heartbeat: true
+        - activity:
+            name: main.dynamicOnFalseConditionActivity
+            arguments:
+              - flipResult
+              - recNode
+            result: nKey
+    next_key: nKey
+    revisit: true
+  #flipcoin2 is not reachable, test if the workflow will execute it
+  - name: flipcoin2
+    activity:
+      name: main.flipCoin
+      result: flipResult
+      maximum_attempts: 5
+      max_duration: 5m
+      heartbeat: true

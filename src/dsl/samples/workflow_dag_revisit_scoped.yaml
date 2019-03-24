@@ -1,0 +1,71 @@
+# This sample workflow showcases the usage of revisit notation for statement combined with static next recursive
+#
+# In this case, if the flipcoin generates false result, the dynamicOnFalseCondition will return the recNode:flipcoin1 & flipcoin2
+# and mark its node's next node as flipcoin1 and flipcoin2. This would only work when flipcoin1 is marked revisit true, otherwise
+# it will complete anyway cause the next node is not revisitable
+# flipcoin2 would always use flipcoin1 as its next
+#
+# In this version, the last flipcoin2 execution would not lead to execution of flipcoin1 by design
+# Cause the ends of loop results none next_key in flipcoin1, which would stop the recursion anyway.
+
+meta:
+  name: wf-revisit-3
+  max_duration: 10m
+  max_start_time: 10s
+  version: 0.0.1
+root:
+  - flipcoin1
+variables:
+  arg1: value1
+  arg2: value2
+  maxRevisit: 10
+  revisitCount: 0
+  recNode1: $$iterator.flipcoin1
+  recNode2: test.flipcoin2
+  recNode3: test.flipcoin2
+nodes:
+  - name: flipcoin1
+    proto: true
+    sequence:
+      elements:
+        - activity:
+            name: main.breakOnMaxNRevisitActivity
+            arguments:
+              - maxRevisit
+              - revisitCount
+            results:
+            - revisitCount
+          stop_on_err: true
+        - activity:
+            name: main.flipCoin
+            results:
+            - flipResult$$node_id
+            maximum_attempts: 5
+            max_duration: 5m
+            heartbeat: true
+        - activity:
+            name: main.dynamicOnFalseConditionActivity
+            arguments:
+              - flipResult$$node_id
+              - recNode1
+              - recNode2
+              - recNode3
+            results:
+            - nKey$$node_id
+    #dynamic next
+    next_key: nKey$$node_id
+    revisit: true
+  - name: flipcoin2
+    scope: test
+    sequence:
+      elements:
+      - activity:
+          name: main.flipCoin
+          maximum_attempts: 5
+          max_duration: 5m
+          stop_on_err: false
+        #static next recursive
+    next:
+    - root.flipcoin1
+    revisit: true
+
