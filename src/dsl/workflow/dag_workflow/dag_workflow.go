@@ -49,6 +49,7 @@ type (
 		Root      []string
 		OnExit    []string `yaml:"on_exit"`
 		Variables map[string]string
+		Result    map[string]string
 		Nodes     []*DagStatement
 	}
 
@@ -464,8 +465,17 @@ func DagWorkflow(ctx workflow.Context, dagWorkflow DagWorkflowData) ([]byte, err
 
 			//workflow.Sleep(finalizeCtx, 1 * time.Second)
 
-			log.Printf("DAG execution completes with result %v", dgErr.Err())
-			return nil, dgErr.Err()
+			var finalResult []byte
+			if dagWorkflow.Result != nil {
+				resMap := make(map[string]string)
+				for k, v := range dagWorkflow.Result {
+					resMap[k] = bindings[getScopedKey(DefaultScope, v)]
+				}
+				finalResult, _ = json.Marshal(resMap)
+			}
+
+			log.Printf("DAG execution completes with result %v", string(finalResult))
+			return finalResult, dgErr.Err()
 		}
 	}
 }

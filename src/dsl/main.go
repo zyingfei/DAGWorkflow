@@ -12,7 +12,6 @@ import (
 	"go.uber.org/cadence/workflow"
 	"dsl/activityimpl"
 	"dsl/workflow/dag_workflow"
-	"dsl/workflow/simple_workflow"
 	workflow2 "dsl/workflow"
 	"go.uber.org/cadence/activity"
 	"time"
@@ -20,17 +19,15 @@ import (
 )
 
 var WorkflowNewFuncMap = map[string]interface{}{
-	"SimpleDslWorkflow": simple_workflow.NewWorkflow,
 	"DagWorkflow":       dag_workflow.NewDagWorkflow,
 }
 
 //registry of all applications and activities
 var (
-	ApplicationNames    = []string{dag_workflow.ApplicationName, simple_workflow.ApplicationName}
-	ApplicationVersions = []string{dag_workflow.ApplicationVersion, simple_workflow.ApplicationVersion}
+	ApplicationNames    = []string{dag_workflow.ApplicationName}
+	ApplicationVersions = []string{dag_workflow.ApplicationVersion}
 
 	WorkflowExecTypeMap = map[string]interface{}{
-		"SimpleDslWorkflow": simple_workflow.SimpleDSLWorkflow,
 		"DagWorkflow":       dag_workflow.DagWorkflow,
 	}
 

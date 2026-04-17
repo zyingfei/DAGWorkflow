@@ -1,0 +1,27 @@
+# This sample demonstrates non-null result extraction in a DAG flow.
+meta:
+  name: result_demo
+  max_duration: 1m
+  max_start_time: 10s
+
+variables:
+  input_val: "Hello World"
+
+root:
+  - step1
+
+nodes:
+  - name: step1
+    sequence:
+      elements:
+      - activity:
+          name: main.sampleActivity1
+          arguments:
+          - input_val
+          result: final_output
+    next: []
+
+# Extraction map: Maps a user-facing key to the internal variable name
+result:
+  summary: final_output
+  status: input_val
