@@ -1,0 +1,24 @@
+# This sample workflow showcases the pre sleep & post sleep feature for nodes
+# The pre sleep happens before execution, and the post sleep happens after execution.
+# In this case, timer 1m -> sampleActivity2 -> timer 1m -> timer 10s -> sampleActivity2
+
+meta:
+  name: wf-sleep
+  max_duration: 10m
+  max_start_time: 10s
+root:
+  - flipcoin
+nodes:
+  - name: flipcoin
+    activity:
+      name: main.sampleActivity2
+      maximum_attempts: 1
+    pre_sleep: 1m
+    post_sleep: 1m
+    next:
+      - flipcoin2
+  - name: flipcoin2
+    activity:
+      name: main.sampleActivity2
+      maximum_attempts: 1
+    pre_sleep: 10s

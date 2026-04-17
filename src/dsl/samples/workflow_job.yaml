@@ -1,0 +1,38 @@
+# This sample workflow executes a generic job monitoring and retry flow.
+# 1) MonitorJob, takes jobId, frequency, and timeout as arguments.
+# 2) RetryJob, takes jobId and the result from MonitorJob as arguments.
+#    It will retry the job if MonitorJob returns "retry" and break if "success".
+
+meta:
+  name: generic_job_wf
+  max_duration: 10m
+  max_start_time: 10s
+
+variables:
+  job_id: "test-job-123"
+  monitor_frequency: "5s"
+  monitor_timeout: "1m"
+
+root:
+  - job_node
+
+nodes:
+  - name: job_node
+    sequence:
+      elements:
+      - activity:
+          name: dsl/activityimpl.MonitorJob
+          arguments:
+          - job_id
+          - monitor_frequency
+          - monitor_timeout
+          result: monitor_status
+          maximum_attempts: 1
+          heartbeat: true
+      - activity:
+          name: dsl/activityimpl.RetryJob
+          arguments:
+          - job_id
+          - monitor_status
+          result: retry_status
+    next: []

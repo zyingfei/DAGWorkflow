@@ -1,0 +1,28 @@
+# This is the workflow yaml file called by update/pause mode as internal usage.
+# WorkflowId must be specified when start binary in update/pause flag
+# It is only used in DAG workflow
+#      When the workflow execute the activity, the internal task type key : signal will
+# trigger a workflow internal function by passing the workflowId, runId(not mandatory) and
+# also the updated payload with signal name "DAG_Reload" to the specified workflow.
+#
+# the updated payload is actually the pause payload when it is in pause mode.
+#
+# The trigger result will be printed by the signalActivity activity.
+
+meta:
+  name: signal_wf
+  max_duration: 5m
+  max_start_time: 10s
+
+root:
+- signal
+
+nodes:
+  - name: signal
+    activity:
+      name: main.signalActivity
+      arguments:
+      - workflowId
+      - runId
+      - updatedPayload
+      internal_task_type: signal

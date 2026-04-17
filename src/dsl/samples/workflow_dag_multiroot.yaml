@@ -1,0 +1,141 @@
+# This sample workflow showcases the multiple root supports for DAG workflow
+# flipcoin5 waiting on both flipcoin3 and flipcoin4, flipcoin3 waiting on flipcoin1, flipcoin4 waiting on flipcoin2
+# The actual execution sequence is flipcoin1 && flipcoin2 -> flipcoin3 && flipcoin4 -> flipcoin5
+
+meta:
+  name: wf-multiroot
+  max_duration: 10m
+  max_start_time: 10s
+root:
+  - flipcoin1
+  - flipcoin2
+
+variables:
+  arg1: value1
+  arg2: value2
+
+nodes:
+  - name: flipcoin1
+    sequence:
+      elements:
+      - activity:
+          name: main.sampleActivity1
+          arguments:
+          - arg1
+          result: result1
+      - activity:
+          name: main.sampleActivity2
+          arguments:
+          - result1
+          result: result2
+          maximum_attempts: 5
+          max_duration: 5m
+          heartbeat: true
+        stop_on_err: false
+      - activity:
+          name: main.sampleActivity3
+          arguments:
+          - arg2
+          - result2
+          result: result3
+    next:
+    - flipcoin3
+  - name: flipcoin2
+    sequence:
+      elements:
+        - activity:
+            name: main.sampleActivity1
+            arguments:
+            - arg1
+            result: result1
+        - activity:
+            name: main.sampleActivity2
+            arguments:
+            - result1
+            result: result2
+            maximum_attempts: 1
+            max_duration: 5m
+            heartbeat: true
+          stop_on_err: false
+        - activity:
+            name: main.sampleActivity3
+            arguments:
+            - arg2
+            - result2
+            result: result3
+    next:
+    - flipcoin4
+  - name: flipcoin3
+    sequence:
+      elements:
+        - activity:
+            name: main.sampleActivity1
+            arguments:
+            - arg1
+            result: result1
+        - activity:
+            name: main.sampleActivity2
+            arguments:
+            - result1
+            result: result2
+            maximum_attempts: 5
+            max_duration: 5m
+            heartbeat: false
+          stop_on_err: true
+        - activity:
+            name: main.sampleActivity3
+            arguments:
+            - arg2
+            - result2
+            result: result3
+    next:
+    - flipcoin5
+  - name: flipcoin4
+    sequence:
+      elements:
+        - activity:
+            name: main.sampleActivity1
+            arguments:
+            - arg1
+            result: result1
+        - activity:
+            name: main.sampleActivity2
+            arguments:
+            - result1
+            result: result2
+            maximum_attempts: 1
+            max_duration: 5m
+            heartbeat: true
+          stop_on_err: false
+        - activity:
+            name: main.sampleActivity3
+            arguments:
+            - arg2
+            - result2
+            result: result3
+    next:
+    - flipcoin5
+  - name: flipcoin5
+    sequence:
+      elements:
+        - activity:
+            name: main.sampleActivity1
+            arguments:
+            - arg1
+            result: result1
+        - activity:
+            name: main.sampleActivity2
+            arguments:
+            - result1
+            result: result2
+            maximum_attempts: 1
+            max_duration: 5m
+            heartbeat: true
+          stop_on_err: false
+        - activity:
+            name: main.sampleActivity3
+            arguments:
+            - arg2
+            - result2
+            result: result3
+

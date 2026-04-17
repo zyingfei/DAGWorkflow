@@ -1,0 +1,18 @@
+* Initial version:
+Work started from cadence-sample.
+Why we chose Cadence,
+
+1. Super Fast & Concurrency guaranteed & HA
+Comparing to Airflow, it is super fast to run short living, concurrent jobs.
+Comparing to Celery, it is powerful enough to run complicate DAGs or long time schedules (1 day, 1 month, 1 yr etc.)
+Comparing to Netflix Conductor, it is more extensible and flexible with code defined workflow, more lightweight yet powerful.
+
+2. Workflow features can be easily added in a few line - Workflow as Code
+Initial DAG implements features includes,
+Dynamic runtime DAG support
+Easily Query build based on a workflow.
+Platform - Worker - Client decoupling.
+Fully distributed workers, able to do rolling upgrade.
+Versionized task management and executable.
+Scalable based on Cassandra or SQL.
+Open source project support.

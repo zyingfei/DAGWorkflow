@@ -1,0 +1,61 @@
+# This sample workflow showcases the dynamic update of DAG workflow by using dynamicActivity to generate the next nodes instead of specifying them directly.
+# DAG workflow can be runtime updated by definition using next_key (workflow can also be updated manually by using update mode)
+#
+# dynamicActivity, takes variables key's value as inputs and output them directly, in this case we maps the name of nodes in variables.
+# if the next_key is specified in statement, the DAG workflow will be update by adding the new dependencies relationships according to the value(specifies the key in bindings).
+#
+# In this sample, when node flipcoin completes, the result of the dynamicActivity, which are flipcoin-dynamic1 and flipcoin-dynamic2 are added to the next nodes of it,
+# and their next nodes are added too to form a new DAG workflow, workflow continues.
+# After flipcoin-dynamic1 and flipcoin-dynamic2 completes, flipcoin2 is executed, and the DAG workflow is updated again and flipcoin-dynamic3 is added as its next node.
+# flipcoin-dynamic3 is executed then, and the DAG execution completes
+
+meta:
+  name: wf-dyn
+  max_duration: 10m
+  max_start_time: 10s
+root:
+  - flipcoin
+
+variables:
+  flipcoin-dynamic1: flipcoin-dynamic1
+  flipcoin-dynamic2: flipcoin-dynamic2
+  flipcoin-dynamic3: flipcoin-dynamic3
+
+nodes:
+  - name: flipcoin
+    activity:
+      name: main.dynamicActivity
+      arguments:
+        - flipcoin-dynamic1
+        - flipcoin-dynamic2
+      maximum_attempts: 1
+      max_duration: 5m
+      result: res
+    next_key: res
+  - name: flipcoin-dynamic1
+    activity:
+      name: main.sampleActivity2
+      maximum_attempts: 5
+      max_duration: 5m
+  - name: flipcoin-dynamic2
+    activity:
+      name: main.sampleActivity2
+      maximum_attempts: 5
+      max_duration: 5m
+    next:
+      - flipcoin2
+  - name: flipcoin-dynamic3
+    activity:
+      name: main.sampleActivity2
+      maximum_attempts: 5
+      max_duration: 5m
+  - name: flipcoin2
+    activity:
+      name: main.dynamicActivity
+      arguments:
+        - flipcoin-dynamic3
+      maximum_attempts: 5
+      max_duration: 5m
+      result: res2
+    next_key: res2
+

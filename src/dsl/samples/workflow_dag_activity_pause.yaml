@@ -1,0 +1,23 @@
+# This sample workflow show case the pause feature by executing a sampleActivity2 first then entering the pause state by internal pause activity,
+# until user starts the binary with complete mode and gives its workflowId and the activityId (here is 1 since only one activity executed before manually pausing).
+# Paused activity will timeout if it is not triggered by complete mode, and the pause activity will not have "completed" state
+# Complete mode will complete the pause activity and let it generate a result "Resume Activity", which is predefined.
+#
+# start the workflow:
+# ./bin/dsl -m trigger -wfType DagWorkflow -dslConfig samples/workflow_dag_activity_pause.yaml
+# resume the workflow:
+# ./bin/dsl -m complete -w workflowId -t pauseActivityId
+
+meta:
+  name: wf-activity-pause
+  max_duration: 10m
+  max_start_time: 10s
+root:
+  - flipcoin
+nodes:
+  - name: flipcoin
+    activity:
+      name: main.sampleActivity2
+      maximum_attempts: 1
+      max_duration: 5m
+      pause: true

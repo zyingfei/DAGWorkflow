@@ -1,0 +1,7 @@
+# config for sample
+domain: "dsl-domain"
+service: "cadence-frontend"
+host: "localhost:7933"
+activity_worker: true
+workflow_worker: true
+
