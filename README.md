@@ -16,6 +16,12 @@ The engine leverages **Uber Cadence** (now Temporal-compatible) for persistence 
 - **Generic Activity Framework**: Easily bind Go activities to YAML-defined workflow steps.
 - **Result Extraction**: Map internal workflow variables to a final non-null output payload.
 
+### Uniqueness vs. Modern DSLs (iWF, Serverless Workflow)
+While modern frameworks like the Serverless Workflow specification or Temporal's iWF provide excellent declarative abstractions, this DAG implementation tackles highly dynamic edge cases that are typically rigid in other YAML engines:
+* **Runtime DAG Mutation via `next_key`**: Activities can generate lists of next node *names* on the fly. The DAG topology actively recalculates and resolves transitive dependencies mid-flight rather than being statically compiled.
+* **Templated Prototypes (`proto: true`)**: Nodes can be marked as prototypes, serving as factories for loops. The engine automatically scopes variables (`$$node_id`, `$$iterator`) giving you programmatic recursion natively within the YAML graph.
+* **Dynamic Scoping**: State context is isolated through explicitly defined boundary namespaces (`test.flipcoin2`), preventing variable collisions in complex parallel branching.
+
 ---
 
 ## 🛠 Setup & Integration Testing
