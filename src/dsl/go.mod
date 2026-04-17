@@ -4,9 +4,10 @@ go 1.22
 
 require (
 	github.com/hashicorp/go-multierror v1.1.1
-	github.com/hashicorp/terraform v0.11.11
+	github.com/hashicorp/terraform v0.12.17
 	github.com/pborman/uuid v1.2.0
 	github.com/pkg/errors v0.9.1
+	github.com/stretchr/testify v1.9.0
 	github.com/uber-go/tally v3.3.15+incompatible
 	go.uber.org/cadence v1.3.0
 	go.uber.org/yarpc v1.55.0
@@ -16,7 +17,7 @@ require (
 
 require (
 	github.com/BurntSushi/toml v0.4.1 // indirect
-	github.com/agext/levenshtein v1.2.1 // indirect
+	github.com/agext/levenshtein v1.2.2 // indirect
 	github.com/apache/thrift v0.16.0 // indirect
 	github.com/apparentlymart/go-textseg v1.0.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
@@ -26,13 +27,14 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.2.0 // indirect
 	github.com/golang/mock v1.5.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
-	github.com/google/uuid v1.0.0 // indirect
+	github.com/google/uuid v1.1.1 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
-	github.com/hashicorp/hcl2 v0.0.0-20191002203319-fb75b3253c80 // indirect
+	github.com/hashicorp/hcl/v2 v2.0.0 // indirect
 	github.com/jonboulle/clockwork v0.4.0 // indirect
+	github.com/kisielk/errcheck v1.5.0 // indirect
 	github.com/marusama/semaphore/v2 v2.5.0 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.2-0.20181231171920-c182affec369 // indirect
-	github.com/mitchellh/go-wordwrap v0.0.0-20150314170334-ad45545899c7 // indirect
+	github.com/mitchellh/go-wordwrap v1.0.0 // indirect
 	github.com/opentracing/opentracing-go v1.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_golang v1.11.1 // indirect
@@ -41,10 +43,9 @@ require (
 	github.com/prometheus/procfs v0.6.0 // indirect
 	github.com/robfig/cron v1.2.0 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
-	github.com/stretchr/testify v1.9.0 // indirect
 	github.com/uber-go/mapdecode v1.0.0 // indirect
 	github.com/uber/tchannel-go v1.32.1 // indirect
-	github.com/zclconf/go-cty v1.0.0 // indirect
+	github.com/zclconf/go-cty v1.1.0 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/net/metrics v1.3.0 // indirect
@@ -56,7 +57,7 @@ require (
 	golang.org/x/oauth2 v0.1.0 // indirect
 	golang.org/x/sys v0.15.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
-	golang.org/x/time v0.0.0-20170927054726-6dc17368e09b // indirect
+	golang.org/x/time v0.0.0-20190308202827-9d24e82272b4 // indirect
 	golang.org/x/tools v0.6.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20200212174721-66ed5ce911ce // indirect
