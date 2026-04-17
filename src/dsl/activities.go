@@ -82,7 +82,7 @@ func flipCoin(ctx context.Context, input dag_workflow.ActivityInput) (*dag_workf
 		}
 	}()
 
-	fmt.Printf("[%s] Run %s with input %v and res %v for wf %s \n", time.Now().Format(time.RFC3339), res, input, res, activity.GetInfo(ctx).WorkflowExecution.ID)
+	fmt.Printf("[%s] Run %t with input %v and res %v for wf %s \n", time.Now().Format(time.RFC3339), res, input, res, activity.GetInfo(ctx).WorkflowExecution.ID)
 
 	var duration time.Duration
 	if !res {

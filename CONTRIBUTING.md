@@ -1,4 +1,4 @@
-How to contribute to tpaas-workflow
+How to contribute to DAGWorkflow
 
 1. Did you write a patch that fixes a bug or a new enhancement to the workflow?
 

@@ -53,8 +53,8 @@ var (
 		dynamicOnFalseConditionActivity,
 		flipCoin,
 		breakOnMaxNRevisitActivity,
-		activityimpl.MonitorTpaasJob,
-		activityimpl.RetryTpaasJob,
+		activityimpl.MonitorJob,
+		activityimpl.RetryJob,
 	}
 )
 
