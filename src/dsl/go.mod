@@ -7,6 +7,7 @@ require (
 	github.com/hashicorp/terraform v0.11.11
 	github.com/pborman/uuid v1.2.0
 	github.com/pkg/errors v0.9.1
+	github.com/stretchr/testify v1.9.0
 	github.com/uber-go/tally v3.3.15+incompatible
 	go.uber.org/cadence v1.3.0
 	go.uber.org/yarpc v1.55.0
@@ -23,7 +24,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.1.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/facebookgo/clock v0.0.0-20150410010913-600d898af40a // indirect
-	github.com/golang-jwt/jwt/v5 v5.2.0 // indirect
+	github.com/golang-jwt/jwt/v5 v5.2.2 // indirect
 	github.com/golang/mock v1.5.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/uuid v1.0.0 // indirect
@@ -41,7 +42,6 @@ require (
 	github.com/prometheus/procfs v0.6.0 // indirect
 	github.com/robfig/cron v1.2.0 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
-	github.com/stretchr/testify v1.9.0 // indirect
 	github.com/uber-go/mapdecode v1.0.0 // indirect
 	github.com/uber/tchannel-go v1.32.1 // indirect
 	github.com/zclconf/go-cty v1.0.0 // indirect
