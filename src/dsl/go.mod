@@ -7,6 +7,7 @@ require (
 	github.com/hashicorp/terraform v0.11.11
 	github.com/pborman/uuid v1.2.0
 	github.com/pkg/errors v0.9.1
+	github.com/stretchr/testify v1.9.0
 	github.com/uber-go/tally v3.3.15+incompatible
 	go.uber.org/cadence v1.3.0
 	go.uber.org/yarpc v1.55.0
@@ -41,7 +42,6 @@ require (
 	github.com/prometheus/procfs v0.6.0 // indirect
 	github.com/robfig/cron v1.2.0 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
-	github.com/stretchr/testify v1.9.0 // indirect
 	github.com/uber-go/mapdecode v1.0.0 // indirect
 	github.com/uber/tchannel-go v1.32.1 // indirect
 	github.com/zclconf/go-cty v1.0.0 // indirect
@@ -61,7 +61,7 @@ require (
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20200212174721-66ed5ce911ce // indirect
 	google.golang.org/grpc v1.28.0 // indirect
-	google.golang.org/protobuf v1.31.0 // indirect
+	google.golang.org/protobuf v1.33.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	honnef.co/go/tools v0.3.2 // indirect
 )
