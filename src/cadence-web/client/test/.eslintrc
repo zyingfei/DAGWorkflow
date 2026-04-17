@@ -1,9 +1,0 @@
-{
-  "env": {
-    "mocha": true
-  },
-  "globals": {
-    "Scenario": true,
-    "retry": true
-  }
-}
