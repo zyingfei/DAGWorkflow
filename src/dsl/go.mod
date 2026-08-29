@@ -1,6 +1,6 @@
 module dsl
 
-go 1.22
+go 1.25.0
 
 require (
 	github.com/hashicorp/go-multierror v1.1.1
@@ -15,24 +15,29 @@ require (
 )
 
 require (
+	github.com/hashicorp/hcl/v2 v2.0.0 // indirect
+	golang.org/x/sync v0.20.0 // indirect
+	golang.org/x/tools/go/expect v0.1.1-deprecated // indirect
+)
+
+require (
 	github.com/BurntSushi/toml v0.4.1 // indirect
-	github.com/agext/levenshtein v1.2.1 // indirect
+	github.com/agext/levenshtein v1.2.2 // indirect
 	github.com/apache/thrift v0.16.0 // indirect
 	github.com/apparentlymart/go-textseg v1.0.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
-	github.com/cespare/xxhash/v2 v2.1.1 // indirect
+	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/facebookgo/clock v0.0.0-20150410010913-600d898af40a // indirect
 	github.com/golang-jwt/jwt/v5 v5.2.2 // indirect
 	github.com/golang/mock v1.5.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
-	github.com/google/uuid v1.0.0 // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
-	github.com/hashicorp/hcl2 v0.0.0-20191002203319-fb75b3253c80 // indirect
 	github.com/jonboulle/clockwork v0.4.0 // indirect
 	github.com/marusama/semaphore/v2 v2.5.0 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.2-0.20181231171920-c182affec369 // indirect
-	github.com/mitchellh/go-wordwrap v0.0.0-20150314170334-ad45545899c7 // indirect
+	github.com/mitchellh/go-wordwrap v1.0.0 // indirect
 	github.com/opentracing/opentracing-go v1.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_golang v1.11.1 // indirect
@@ -41,25 +46,24 @@ require (
 	github.com/prometheus/procfs v0.6.0 // indirect
 	github.com/robfig/cron v1.2.0 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
-	github.com/stretchr/testify v1.9.0 // indirect
+	github.com/stretchr/testify v1.9.0
 	github.com/uber-go/mapdecode v1.0.0 // indirect
 	github.com/uber/tchannel-go v1.32.1 // indirect
-	github.com/zclconf/go-cty v1.0.0 // indirect
+	github.com/zclconf/go-cty v1.1.0 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/net/metrics v1.3.0 // indirect
 	go.uber.org/thriftrw v1.25.0 // indirect
 	golang.org/x/exp/typeparams v0.0.0-20220218215828-6cf2b201936e // indirect
 	golang.org/x/lint v0.0.0-20200130185559-910be7a94367 // indirect
-	golang.org/x/mod v0.8.0 // indirect
-	golang.org/x/net v0.38.0
-	golang.org/x/oauth2 v0.27.0
-	golang.org/x/sys v0.15.0
-	golang.org/x/text v0.14.0
-	golang.org/x/time v0.0.0-20170927054726-6dc17368e09b // indirect
-	golang.org/x/tools v0.6.0 // indirect
-	google.golang.org/appengine v1.6.8 // indirect
-	google.golang.org/genproto v0.0.0-20200212174721-66ed5ce911ce // indirect
+	golang.org/x/mod v0.35.0 // indirect
+	golang.org/x/net v0.55.0 // indirect
+	golang.org/x/oauth2 v0.27.0 // indirect
+	golang.org/x/sys v0.45.0 // indirect
+	golang.org/x/text v0.37.0 // indirect
+	golang.org/x/time v0.0.0-20190308202827-9d24e82272b4 // indirect
+	golang.org/x/tools v0.44.0 // indirect
+	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1 // indirect
 	google.golang.org/grpc v1.56.3 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
